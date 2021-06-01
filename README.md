@@ -44,6 +44,7 @@ Nothing new here - we are using an array of object literals and properties to de
 | ---------------- | -------------- | -------- | ------- | -------------------------------------------------------------------- |
 | title            | string         | no       |         | The Title displayed in the Table Header                              |
 | columns          | array<Columns> | yes      | []      | The column configuration                                             |
+| isLoading        | bool           | no       |         | Show a loading text                                                  |
 | list             | array<Object>  | yes      | []      | List of records containing properties with name of `column selector` |
 | actions          | array<Actions> | no       | []      | The action configuration                                             |
 | pagination       | bool           | no       | false   | to enable pagination                                                 |

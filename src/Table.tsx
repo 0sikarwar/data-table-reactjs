@@ -1,0 +1,328 @@
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import Props, { ListItem } from './types';
+import './table.css';
+import { sortIcon, funnelIcon } from './icon';
+import { export2File, filterList, sortList } from './tabel.helper';
+const Table: React.FunctionComponent<Props> = props => {
+  const [pageSize, setPageSize] = useState(20);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [list, setList] = useState([...props.list]);
+  const [listToDisplay, setListToDispaly] = useState([...list]);
+  const [sortBy, setSortBy] = useState<{ name: string; type: string }>({
+    name: '',
+    type: '',
+  });
+  const [filterBy, setFilterBy] = useState<{ [key: string]: string }>({});
+  const [totalEntry, setTotalEntry] = useState(list.length);
+  const [totalPageNumber, setTotalPageNumber] = useState(
+    Math.ceil(totalEntry / pageSize)
+  );
+  const handleDownload = (e: ChangeEvent<HTMLSelectElement>) => {
+    export2File(props.columns, list, e.target.value);
+  };
+  const handlePageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPageSize(Number(e.target.value));
+    setTotalPageNumber(Math.ceil(totalEntry / Number(e.target.value)));
+    setPageNumber(1);
+  };
+
+  const handleSortBy = (key: string) => {
+    const updatedList = sortList(
+      list,
+      key,
+      sortBy.type === 'asc' ? 'dsc' : 'asc'
+    );
+    setList([...updatedList]);
+    setSortBy({ name: key, type: sortBy.type === 'asc' ? 'dsc' : 'asc' });
+    setPageNumber(1);
+  };
+
+  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const filterVlue = e.target.value;
+    const filerName = e.target.name;
+    getFilteredList(filterVlue, filerName);
+  };
+
+  const getFilteredList = (filterVlue: string, filerName: string) => {
+    let currentFilters = { ...filterBy };
+    let listToFilter = list;
+    if (!filterVlue) {
+      delete currentFilters[filerName];
+      listToFilter = props.list;
+    } else {
+      currentFilters[filerName] = filterVlue;
+    }
+    setFilterBy(currentFilters);
+    const updatedList = filterList(listToFilter, currentFilters);
+    setList(updatedList);
+    setPageNumber(1);
+  };
+
+  const setListInState = (newList: Array<ListItem>) => {
+    if (newList.length !== totalEntry) {
+      setTotalEntry(newList.length);
+      setTotalPageNumber(Math.ceil(newList.length / pageSize));
+    }
+    setListToDispaly(
+      newList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+    );
+  };
+
+  useEffect(() => {
+    const currentList = [...list];
+    setListInState(currentList);
+  }, [pageNumber, pageSize, list]);
+  return (
+    <div
+      className={`react-data-table-component-container ${props.containerClass ||
+        ''}`}
+    >
+      <div
+        className={`react-data-table-title-container ${props.titleContainerClass ||
+          ''}`}
+      >
+        <div className={`react-data-table-title ${props.titleClass || ''}`}>
+          {props.title ? props.title : ''}
+        </div>
+        <div
+          className={`react-data-table-download-dropdown-container ${props.downloadDropDownContainerClass ||
+            ''}`}
+        >
+          <label
+            className="react-data-table-download-lable"
+            htmlFor="downloadOpt"
+          >
+            Export data:
+          </label>
+          <select
+            className={`react-data-table-download-dropdown ${props.downloadDropDownClass ||
+              ''}`}
+            id="downloadOpt"
+            onChange={handleDownload}
+          >
+            <option value=""> Select an option </option>
+            <option value=".txt">.txt</option>
+            <option value=".csv">.csv</option>
+          </select>
+        </div>
+      </div>
+      <div
+        className={`react-data-table-wrapper ${props.tableWapperClass || ''}`}
+      >
+        <table className={`react-data-table ${props.tableClass || ''}`}>
+          <thead>
+            <tr
+              className={`react-data-table-header ${props.headerRowClass ||
+                ''}`}
+            >
+              {props.showSerialNumber && (
+                <th
+                  className={`react-data-table-header-cell ${props.headerCellClass ||
+                    ''}`}
+                  style={{ width: '50px' }}
+                >
+                  S.No.
+                </th>
+              )}
+              {props.columns.map((item, index) => (
+                <th
+                  key={index}
+                  className={`react-data-table-header-cell ${props.headerCellClass ||
+                    ''}`}
+                  style={item.width ? { width: item.width } : {}}
+                >
+                  <span>{item.name}</span>
+                  <div
+                    className={`react-data-table-header-icon ${props.headerIconContainerClass ||
+                      ''}`}
+                  >
+                    {item.sortable && (
+                      <img
+                        src={sortIcon}
+                        width="12px"
+                        height="12px"
+                        onClick={() => handleSortBy(item.selector)}
+                        style={{
+                          opacity: sortBy.name === item.selector ? 1 : 0.5,
+                        }}
+                      />
+                    )}
+                    {item.filterable && (
+                      <img
+                        src={funnelIcon}
+                        width="12px"
+                        height="12px"
+                        style={{
+                          opacity: !filterBy.hasOwnProperty(item.selector)
+                            ? 0.5
+                            : 1,
+                        }}
+                        onClick={() =>
+                          setFilterBy({ ...filterBy, [item.selector]: '' })
+                        }
+                      />
+                    )}
+                  </div>
+                  {filterBy.hasOwnProperty(item.selector) && (
+                    <div
+                      className={`react-data-table-filter-input-container ${props.filterInputContainerClass ||
+                        ''}`}
+                    >
+                      <input
+                        value={filterBy[item.selector]}
+                        name={item.selector}
+                        placeholder="filter column"
+                        onChange={handleFilterChange}
+                        className={`react-data-table-filter-input-field ${props.filterInputFieldClass ||
+                          ''}`}
+                      />
+                      <span
+                        onClick={() => getFilteredList('', item.selector)}
+                        className={`react-data-table-filter-input-cross ${props.filterInputCrossClass ||
+                          ''}`}
+                      >
+                        X
+                      </span>
+                    </div>
+                  )}
+                </th>
+              ))}
+              {!!props.actions?.length && (
+                <th
+                  className={`react-data-table-header-cell ${props.headerCellClass ||
+                    ''}`}
+                >
+                  Actions
+                </th>
+              )}
+            </tr>
+          </thead>
+          <tbody
+            className={`react-data-table-body ${props.tableBodyClassName ||
+              ''}`}
+          >
+            {listToDisplay.map((obj, index) => (
+              <tr
+                key={index}
+                className={`react-data-table-row ${props.tableRowClass || ''}`}
+              >
+                {props.showSerialNumber && (
+                  <td
+                    className={`react-data-table-cell ${props.tableCellClass ||
+                      ''}`}
+                    style={{ width: '50px' }}
+                  >
+                    {index + 1}
+                  </td>
+                )}
+                {props.columns.map(item => (
+                  <td
+                    className={`react-data-table-cell ${props.tableCellClass ||
+                      ''}`}
+                    key={item.selector + index}
+                    style={item.width ? { width: item.width } : {}}
+                  >
+                    {obj[item.selector]}
+                  </td>
+                ))}
+                <td
+                  className={`react-data-table-cell ${props.tableCellClass ||
+                    ''}`}
+                >
+                  {props.actions?.map(item => (
+                    <span
+                      onClick={() => item.handler(index, obj)}
+                      key={item.key}
+                      className={`t-underLine c-pointer ${item.className ||
+                        ''} ${props.actionsClass || ''}`}
+                    >
+                      {item.label}
+                    </span>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {props.pagination && (
+        <div
+          className={`react-data-table-footer ${props.tableFooterClass || ''}`}
+        >
+          <div className={`${props.pageSizeDropDownContainerClass || ''}`}>
+            <label htmlFor="pazeSizeOpt">Page size:</label>
+            <select
+              value={pageSize}
+              id="pazeSizeOpt"
+              onChange={handlePageSizeChange}
+              className={`react-data-table-page-size-dropdown ${props.pageSizeDropDownClass ||
+                ''}`}
+            >
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+          <div
+            className={`react-data-table-footer-link-container ${props.pageNumberContainerClass ||
+              ''}`}
+          >
+            <span
+              className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                ''}`}
+              onClick={() => setPageNumber(1)}
+            >
+              {'<<'}
+            </span>
+            <span
+              className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                ''}`}
+              onClick={() => pageNumber > 1 && setPageNumber(pageNumber - 1)}
+            >
+              {'<'}
+            </span>
+
+            {Array(totalPageNumber)
+              .fill(0)
+              .map((_, i) =>
+                (i <= pageNumber + 1 && i >= pageNumber - 3) ||
+                i === 0 ||
+                i === totalPageNumber - 1 ? (
+                  <span
+                    className={`react-data-table-footer-link c-pointer ${
+                      i + 1 === pageNumber
+                        ? `active ${props.activePageCellClass || ''}`
+                        : ''
+                    }  ${props.pageNumberCellClass || ''}`}
+                    onClick={() => setPageNumber(i + 1)}
+                    key={i}
+                  >
+                    {i + 1}
+                  </span>
+                ) : (
+                  <span key={i}>.</span>
+                )
+              )}
+            <span
+              className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                ''}`}
+              onClick={() =>
+                pageNumber < totalPageNumber && setPageNumber(pageNumber + 1)
+              }
+            >
+              {'>'}
+            </span>
+            <span
+              className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                ''}`}
+              onClick={() => setPageNumber(totalPageNumber)}
+            >
+              {'>>'}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+export default Table;

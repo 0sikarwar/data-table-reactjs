@@ -55,7 +55,7 @@ the class names are self explantory and can be used to customize the table view
 `containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputCrossClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass`
 All classes can be passed to table
 
-###Usage example
+### Usage example
 
 ```js
 import ReactDataTable from 'data-table-reactjs';

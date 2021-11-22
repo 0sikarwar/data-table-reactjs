@@ -25,9 +25,10 @@ export const sortList = (
 
 export const filterList = (
   list: Array<ListItem>,
-  filterObj: { [key: string]: string }
+  filterObj: { [key: string]: string },
+  sortBy: { name: string; type: string }
 ): Array<ListItem> => {
-  return list.filter((item) => {
+  const updatedList = list.filter((item) => {
     let isFiltered = true;
     for (let key in filterObj) {
       if (
@@ -44,6 +45,8 @@ export const filterList = (
     }
     return isFiltered;
   });
+  const sortedList = sortList(updatedList, sortBy.name, sortBy.type)
+  return sortedList
 };
 
 export const export2File = (

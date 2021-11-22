@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import Props, { ListItem } from './types';
 import './table.css';
-import { sortIcon, funnelIcon } from './icon';
+import { funnelIcon, sortUpIcon, sortDownIcon } from './icon';
 import { export2File, filterList, sortList } from './tabel.helper';
 const Table: React.FunctionComponent<Props> = props => {
   const [pageSize, setPageSize] = useState(20);
@@ -45,15 +46,15 @@ const Table: React.FunctionComponent<Props> = props => {
 
   const getFilteredList = (filterVlue: string, filerName: string) => {
     let currentFilters = { ...filterBy };
-    let listToFilter = list;
+    let listToFilter = filterBy[filerName].length > filterVlue.length ? [...props.list] :list;
     if (!filterVlue) {
-      delete currentFilters[filerName];
+      currentFilters[filerName] = '';
       listToFilter = props.list;
     } else {
       currentFilters[filerName] = filterVlue;
     }
     setFilterBy(currentFilters);
-    const updatedList = filterList(listToFilter, currentFilters);
+    const updatedList = filterList(listToFilter, currentFilters, sortBy);
     setList(updatedList);
     setPageNumber(1);
   };
@@ -64,7 +65,7 @@ const Table: React.FunctionComponent<Props> = props => {
       setTotalPageNumber(Math.ceil(newList.length / pageSize));
     }
     setListToDispaly(
-      newList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize)
+      props.pagination ? newList.slice((pageNumber - 1) * pageSize, pageNumber * pageSize) : newList
     );
   };
 
@@ -137,15 +138,27 @@ const Table: React.FunctionComponent<Props> = props => {
                       ''}`}
                   >
                     {item.sortable && (
+                      <div className="react-data-table-sort-icon-container">
                       <img
-                        src={sortIcon}
+                        src={sortUpIcon}
                         width="12px"
                         height="12px"
                         onClick={() => handleSortBy(item.selector)}
                         style={{
-                          opacity: sortBy.name === item.selector ? 1 : 0.5,
+                          opacity: sortBy.name === item.selector && sortBy.type === 'asc' ? 1 : 0.5,
+                          marginBottom: "-3px"
                         }}
                       />
+                      <img
+                        src={sortDownIcon}
+                        width="12px"
+                        height="12px"
+                        onClick={() => handleSortBy(item.selector)}
+                        style={{
+                          opacity: sortBy.name === item.selector && sortBy.type === 'dsc' ? 1 : 0.5,
+                        }}
+                      />
+                      </div>
                     )}
                     {item.filterable && (
                       <img
@@ -157,9 +170,15 @@ const Table: React.FunctionComponent<Props> = props => {
                             ? 0.5
                             : 1,
                         }}
-                        onClick={() =>
-                          setFilterBy({ ...filterBy, [item.selector]: '' })
-                        }
+                        onClick={() => {
+                          const temp = { ...filterBy }
+                          if (temp.hasOwnProperty(item.selector)) {
+                            delete temp[item.selector]
+                          } else {
+                            temp[item.selector] = ''
+                          }
+                          setFilterBy(temp)
+                        }}
                       />
                     )}
                   </div>
@@ -178,10 +197,10 @@ const Table: React.FunctionComponent<Props> = props => {
                       />
                       <span
                         onClick={() => getFilteredList('', item.selector)}
-                        className={`react-data-table-filter-input-cross ${props.filterInputCrossClass ||
-                          ''}`}
+                        className={`react-data-table-filter-input-clear ${filterBy[item.selector] ? 'active-clear' : ''}
+                        ${props.filterInputCrossClass || ''}`}
                       >
-                        X
+                        clear
                       </span>
                     </div>
                   )}
@@ -212,7 +231,7 @@ const Table: React.FunctionComponent<Props> = props => {
                       ''}`}
                     style={{ width: '50px' }}
                   >
-                    {index + 1}
+                    {pageNumber > 1 ? ((pageNumber-1)*pageSize + index +1) :(index + 1) }
                   </td>
                 )}
                 {props.columns.map(item => (

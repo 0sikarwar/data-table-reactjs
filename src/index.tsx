@@ -1,5 +1,6 @@
-import React from 'react';
-import Table from './Table';
+import React from "react";
+import Table from "./Table";
+import { loadingIcon } from "./icon";
 
 const ReactDataTable = (
   // @ts-ignore
@@ -8,7 +9,11 @@ const ReactDataTable = (
   return props.columns.length && props.list.length ? (
     <Table {...props} />
   ) : props.isLoading ? (
-    <h3>Loading </h3>
+    props.loadingComponent || (
+      <div className="loading-container">
+        <img src={loadingIcon} />
+      </div>
+    )
   ) : (
     <h5>Record not found</h5>
   );

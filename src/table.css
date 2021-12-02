@@ -4,11 +4,15 @@
   padding: 10px;
 }
 
+.react-data-table-component-container * {
+  box-sizing: border-box;
+}
+
 .react-data-table-title-container {
   font-size: 13px;
   font-weight: normal;
   color: #000000;
-  background: #FFFFFF;
+  background: #ffffff;
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -22,10 +26,19 @@
   overflow-x: hidden;
 }
 
-.react-data-table thead,
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
 .react-data-table-body tr {
   display: table;
+  table-layout: fixed;
   width: 100%;
+}
+.react-data-table thead {
+  display: block;
   table-layout: fixed;
 }
 
@@ -35,10 +48,11 @@
 }
 
 .react-data-table {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   text-align: left;
   border-collapse: collapse;
   margin-top: 10px;
+  width: 100%;
   margin-bottom: 10px;
 }
 
@@ -75,11 +89,9 @@
   font-weight: bold;
   color: #000000;
   text-align: left;
-  max-width: 180px;
-  min-width: 100px;
+  width: 100%;
   position: relative;
   border: 1px solid rgb(197, 196, 196);
-
 }
 
 .react-data-table-header-cell span {
@@ -116,7 +128,7 @@
   cursor: not-allowed;
   pointer-events: none;
 }
-.react-data-table-filter-input-clear.active-clear{
+.react-data-table-filter-input-clear.active-clear {
   cursor: pointer;
   pointer-events: all;
   color: #2b2b2b;
@@ -134,19 +146,19 @@
   display: flex;
   align-items: center;
 }
-.react-data-table-sort-icon-container{
-display: flex;
-flex-direction: column;
-margin: 0px 3px;
+.react-data-table-sort-icon-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 3px;
 }
 
 .react-data-table-footer {
   font-size: 13px;
   font-weight: normal;
   color: #000000;
-  background: #FFFFFF;
+  background: #ffffff;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 10px;
   border-radius: 5px;
 }
@@ -157,12 +169,25 @@ margin: 0px 3px;
 
 .react-data-table-footer-link {
   display: inline-block;
-  background: #DCDCDC;
+  background: #dcdcdc;
   color: #000000;
   padding: 5px 10px;
   border-radius: 5px;
   margin: 3px;
   font-family: sans-serif;
+  min-width: 35px;
+  text-align: center;
+}
+.react-data-table-footer-info {
+  display: flex;
+  align-items: center;
+}
+.react-data-table-footer-info h4 {
+  margin: 0;
+  margin-right: 10px;
+}
+.react-data-table-footer-link-section {
+  display: flex;
 }
 
 .react-data-table-footer-link.active {

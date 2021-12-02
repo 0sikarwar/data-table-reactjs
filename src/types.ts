@@ -45,4 +45,5 @@ export default interface Props {
   pageNumberCellClass?: string;
   activePageCellClass?: string;
   showSerialNumber?: boolean;
+  showDownloadOption?: boolean;
 }

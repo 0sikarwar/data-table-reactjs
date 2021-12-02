@@ -32,10 +32,7 @@ export const filterList = (
     let isFiltered = true;
     for (let key in filterObj) {
       if (
-        filterObj[key].length > 2 &&
-        item[key] &&
-        !item[key]
-          .toString()
+        !item[key]?.toString()
           .toLowerCase()
           .includes(filterObj[key].toLowerCase())
       ) {

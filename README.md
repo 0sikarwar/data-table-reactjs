@@ -50,7 +50,7 @@ Nothing new here - we are using an array of object literals and properties to de
 | actions            | array<Actions>      | no       | []      | The action configuration                                             |
 | pagination         | bool                | no       | false   | to enable pagination                                                 |
 | showSerialNumber   | bool                | no       | false   | to show the serial number as first column of table                   |
-| showDownloadOption | bool                | no       | false   | to show the serial number as first column of table                   |
+| showDownloadOption | bool                | no       | false   | to show download file option                                         |
 
 #### Class Names to modify styles of table
 

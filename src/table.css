@@ -1,6 +1,6 @@
 .react-data-table-component-container {
-  border: 1px solid #535252;
-  background-color: #f8f2f2;
+  border: 1px solid #d1cfcf;
+  border-radius: 10px;
   padding: 10px;
 }
 
@@ -42,6 +42,11 @@
   table-layout: fixed;
 }
 
+.react-data-table-header {
+  display: flex;
+  background: #f7f7f7;
+}
+
 .react-data-table-wrapper {
   max-width: 100vw;
   overflow-x: scroll;
@@ -77,11 +82,11 @@
 }
 
 .react-data-table-row:nth-child(even) {
-  background: #e7eff5;
+  background: #f7f7f7;
 }
 
 .react-data-table-row:hover {
-  background: #e7e7e7;
+  /* background: #e7e7e7; */
 }
 
 .react-data-table-header-cell {
@@ -91,7 +96,6 @@
   text-align: left;
   width: 100%;
   position: relative;
-  border: 1px solid rgb(197, 196, 196);
 }
 
 .react-data-table-header-cell span {
@@ -103,14 +107,16 @@
 }
 
 .react-data-table-filter-input-container {
-  width: 100%;
-  border-bottom: 0.5px solid #c4c2c2;
+  width: 80%;
+  border-radius: 3px;
   display: flex;
-  justify-content: space-between;
+  background-color: #fff;
 }
 
 .react-data-table-filter-input-field {
-  width: 80%;
+  width: 92%;
+  padding: 2px;
+  padding-left: 5px;
   border: 0;
   outline: none;
 }
@@ -127,11 +133,13 @@
   font-weight: 300;
   cursor: not-allowed;
   pointer-events: none;
+  padding-top: 5px;
 }
 .react-data-table-filter-input-clear.active-clear {
   cursor: pointer;
   pointer-events: all;
-  color: #2b2b2b;
+  color: #2282e9;
+  text-decoration: underline;
   font-weight: 500;
 }
 
@@ -140,7 +148,6 @@
   top: 1px;
   right: 2px;
   padding: 1px;
-  background: #fff;
   z-index: 1;
   cursor: pointer;
   display: flex;

@@ -77,10 +77,12 @@ const Table: React.FunctionComponent<Props> = props => {
     setListInState(currentList);
   }, [pageNumber, pageSize, list]);
   let startPage = 1;
-  if (pageNumber > totalPageNumber - 5) {
-    startPage = totalPageNumber - 9;
-  } else if (pageNumber > 5) {
-    startPage = pageNumber - 4;
+  if (totalPageNumber > 10) {
+    if (pageNumber > totalPageNumber - 5) {
+      startPage = totalPageNumber - 9;
+    } else if (pageNumber > 5) {
+      startPage = pageNumber - 4;
+    }
   }
   return (
     <div
@@ -278,7 +280,7 @@ const Table: React.FunctionComponent<Props> = props => {
                     key={item.selector + index}
                     style={item.width ? { width: item.width } : {}}
                   >
-                    {obj[item.selector]}
+                    {obj[item.selector] || props.defaultValForEmpty || '-'}
                   </td>
                 ))}
                 {props.actions?.length && (
@@ -330,31 +332,30 @@ const Table: React.FunctionComponent<Props> = props => {
               className={`react-data-table-footer-link-container ${props.pageNumberContainerClass ||
                 ''}`}
             >
-              <span
-                className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
-                  ''}`}
-                onClick={() => setPageNumber(1)}
-              >
-                Start
-              </span>
-              <span
-                className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
-                  ''}`}
-                onClick={() => pageNumber > 1 && setPageNumber(pageNumber - 1)}
-              >
-                Prev
-              </span>
+              {totalPageNumber > 10 && (
+                <span
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
+                  onClick={() => setPageNumber(1)}
+                >
+                  Start
+                </span>
+              )}
+              {totalPageNumber > 1 && (
+                <span
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
+                  onClick={() =>
+                    pageNumber > 1 && setPageNumber(pageNumber - 1)
+                  }
+                >
+                  Prev
+                </span>
+              )}
 
-              {Array(10)
+              {Array(Math.min(totalPageNumber, 10))
                 .fill(0)
                 .map((_, i) => {
-                  console.log({
-                    pageNumber,
-                    startPage,
-                    i,
-                    'startPage + i': startPage + i,
-                    totalPageNumber,
-                  });
                   return (
                     <span
                       className={`react-data-table-footer-link c-pointer ${
@@ -369,22 +370,27 @@ const Table: React.FunctionComponent<Props> = props => {
                     </span>
                   );
                 })}
-              <span
-                className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
-                  ''}`}
-                onClick={() =>
-                  pageNumber < totalPageNumber && setPageNumber(pageNumber + 1)
-                }
-              >
-                Next
-              </span>
-              <span
-                className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
-                  ''}`}
-                onClick={() => setPageNumber(totalPageNumber)}
-              >
-                Last
-              </span>
+              {totalPageNumber > 1 && (
+                <span
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
+                  onClick={() =>
+                    pageNumber < totalPageNumber &&
+                    setPageNumber(pageNumber + 1)
+                  }
+                >
+                  Next
+                </span>
+              )}
+              {totalPageNumber > 10 && (
+                <span
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
+                  onClick={() => setPageNumber(totalPageNumber)}
+                >
+                  Last
+                </span>
+              )}
             </div>
           </div>
         </div>

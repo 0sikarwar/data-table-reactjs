@@ -33,7 +33,7 @@ export default interface Props {
   headerIconContainerClass?: string;
   filterInputContainerClass?: string;
   filterInputFieldClass?: string;
-  filterInputCrossClass?: string;
+  filterInputApplyClass?: string;
   tableBodyClassName?: string;
   tableRowClass?: string;
   tableCellClass?: string;
@@ -47,4 +47,14 @@ export default interface Props {
   showSerialNumber?: boolean;
   showDownloadOption?: boolean;
   defaultValForEmpty?: any;
+}
+
+export interface PopoverProps {
+  filterInputContainerClass?: string;
+  filterInputFieldClass?: string;
+  filterInputApplyClass?: string;
+  name: string;
+  selector: string;
+  initialVal: string;
+  handleApply: Function;
 }

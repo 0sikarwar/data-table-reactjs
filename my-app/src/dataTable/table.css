@@ -24,6 +24,7 @@
   max-height: 80vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  min-height: 35px;
 }
 
 .loading-container {
@@ -79,6 +80,7 @@
 .react-data-table-cell {
   font-size: 14px;
   color: #333333;
+  word-wrap: break-word;
 }
 
 .react-data-table-row:nth-child(even) {
@@ -104,43 +106,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.react-data-table-filter-input-container {
-  width: 80%;
-  border-radius: 3px;
-  display: flex;
-  background-color: #fff;
-}
-
-.react-data-table-filter-input-field {
-  width: 92%;
-  padding: 2px;
-  padding-left: 5px;
-  border: 0;
-  outline: none;
-}
-
-.react-data-table-filter-input-field:focus {
-  border-bottom-color: #1e0ff1;
-}
-
-.react-data-table-filter-input-clear {
-  cursor: pointer;
-  color: #7a7979;
-  font-family: sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  cursor: not-allowed;
-  pointer-events: none;
-  padding-top: 5px;
-}
-.react-data-table-filter-input-clear.active-clear {
-  cursor: pointer;
-  pointer-events: all;
-  color: #2282e9;
-  text-decoration: underline;
-  font-weight: 500;
 }
 
 .react-data-table-header-icon {

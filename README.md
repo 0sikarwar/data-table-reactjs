@@ -56,7 +56,7 @@ Nothing new here - we are using an array of object literals and properties to de
 #### Class Names to modify styles of table
 
 the class names are self explantory and can be used to customize the table view
-`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputCrossClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass`
+`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputApplyClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass`
 All classes can be passed to table
 
 ### Usage example

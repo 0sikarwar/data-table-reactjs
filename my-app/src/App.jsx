@@ -3,8 +3,8 @@ const columns = [
   {
     name: 'Id',
     selector: 'id',
-    filterable: false,
-    sortable: false,
+    filterable: true,
+    sortable: true,
   },
   {
     name: 'Name',
@@ -15,7 +15,7 @@ const columns = [
   {
     name: 'Location',
     selector: 'location',
-    filterable: false,
+    filterable: true,
     sortable: false,
   },
   {
@@ -69,13 +69,13 @@ const columns = [
   {
     name: 'Create Date',
     selector: 'create_date',
-    filterable: false,
+    filterable: true,
     sortable: false,
   },
   {
     name: 'Update Date',
     selector: 'update_date',
-    filterable: false,
+    filterable: true,
     sortable: false,
   },
 ];

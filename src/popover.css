@@ -1,0 +1,66 @@
+.react-data-table-filter-popover__wrapper {
+  position: relative;
+  margin: 0;
+  display: inline-block;
+}
+.react-data-table-filter-popover__content {
+  position: absolute;
+  left: -90px;
+  top: 30px;
+  width: 250px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -20px);
+  transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+}
+/* 
+.react-data-table-filter-popover__content:before {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  right: calc(50% - 10px);
+  top: -8px;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent #bfbfbf transparent;
+  transition-duration: 0.3s;
+  transition-property: transform;
+} */
+.react-data-table-filter-popover__message {
+  text-align: center;
+  margin: 0;
+}
+
+.react-data-table-filter-input-field {
+  width: 80%;
+  padding: 2px;
+  padding-left: 5px;
+  border: 0;
+  outline: none;
+  border-radius: 5px;
+}
+
+.react-data-table-filter-input-field:focus {
+  border-bottom-color: #1e0ff1;
+}
+
+.react-data-table-filter-input-container {
+  width: 100%;
+  border-radius: 5px;
+  display: flex;
+}
+
+.react-data-table-filter-input-apply {
+  cursor: pointer;
+  color: #2282e9;
+  font-size: 12px;
+  font-weight: 300;
+  padding-top: 5px;
+  font-weight: 500;
+  padding-left: 10px;
+}

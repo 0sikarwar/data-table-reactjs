@@ -4,6 +4,7 @@ import Props, { ListItem } from './types';
 import './table.css';
 import { funnelIcon, sortUpIcon, sortDownIcon } from './icon';
 import { export2File, filterList, sortList } from './tabel.helper';
+import Popover from './popover';
 const Table: React.FunctionComponent<Props> = props => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -14,6 +15,7 @@ const Table: React.FunctionComponent<Props> = props => {
     type: '',
   });
   const [filterBy, setFilterBy] = useState<{ [key: string]: string }>({});
+  const [filterPopoverKey, setFilterPopoverKey] = useState<string>('');
   const [totalEntry, setTotalEntry] = useState(list.length);
   const [totalPageNumber, setTotalPageNumber] = useState(
     Math.ceil(totalEntry / pageSize)
@@ -38,16 +40,22 @@ const Table: React.FunctionComponent<Props> = props => {
     setPageNumber(1);
   };
 
-  const handleFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const filterVlue = e.target.value;
-    const filerName = e.target.name;
-    getFilteredList(filterVlue, filerName);
+  const handleFilterChange = (value: string, name: string) => {
+    const temp = { ...filterBy };
+    temp[name] = value;
+    setFilterPopoverKey('');
+    getFilteredList(temp, value, name);
   };
 
-  const getFilteredList = (filterVlue: string, filerName: string) => {
-    let currentFilters = { ...filterBy };
+  const getFilteredList = (
+    currentFilters: { [key: string]: string },
+    filterVlue: string,
+    filerName: string
+  ) => {
     let listToFilter =
-      filterBy[filerName].length > filterVlue.length ? [...props.list] : list;
+      currentFilters[filerName].length > filterVlue.length
+        ? [...props.list]
+        : list;
     if (!filterVlue) {
       currentFilters[filerName] = '';
       listToFilter = props.list;
@@ -127,7 +135,10 @@ const Table: React.FunctionComponent<Props> = props => {
       <div
         className={`react-data-table-wrapper ${props.tableWapperClass || ''}`}
       >
-        <table className={`react-data-table ${props.tableClass || ''}`}>
+        <table
+          className={`react-data-table ${props.tableClass || ''}`}
+          id="react-data-table"
+        >
           <thead>
             <tr
               className={`react-data-table-header ${props.headerRowClass ||
@@ -174,7 +185,7 @@ const Table: React.FunctionComponent<Props> = props => {
                               sortBy.name === item.selector &&
                               sortBy.type === 'asc'
                                 ? 1
-                                : 0.5,
+                                : 0.2,
                             marginBottom: '-3px',
                           }}
                         />
@@ -188,7 +199,7 @@ const Table: React.FunctionComponent<Props> = props => {
                               sortBy.name === item.selector &&
                               sortBy.type === 'dsc'
                                 ? 1
-                                : 0.5,
+                                : 0.2,
                           }}
                         />
                       </div>
@@ -199,47 +210,30 @@ const Table: React.FunctionComponent<Props> = props => {
                         width="12px"
                         height="12px"
                         style={{
-                          opacity: !filterBy.hasOwnProperty(item.selector)
-                            ? 0.5
-                            : 1,
+                          opacity: !filterBy[item.selector] ? 0.2 : 1,
                         }}
                         onClick={() => {
-                          const temp = { ...filterBy };
-                          if (temp.hasOwnProperty(item.selector)) {
-                            delete temp[item.selector];
-                          } else {
-                            temp[item.selector] = '';
-                          }
-                          filterBy[item.selector] &&
-                            getFilteredList('', item.selector);
-                          setFilterBy(temp);
+                          setFilterPopoverKey(
+                            filterPopoverKey === item.selector
+                              ? ''
+                              : item.selector
+                          );
                         }}
                       />
                     )}
                   </div>
-                  {filterBy.hasOwnProperty(item.selector) && (
-                    <div
-                      className={`react-data-table-filter-input-container ${props.filterInputContainerClass ||
-                        ''}`}
-                    >
-                      <input
-                        value={filterBy[item.selector]}
-                        name={item.selector}
-                        placeholder={'Filter ' + item.selector}
-                        onChange={handleFilterChange}
-                        className={`react-data-table-filter-input-field ${props.filterInputFieldClass ||
-                          ''}`}
-                      />
-                      <span
-                        onClick={() => getFilteredList('', item.selector)}
-                        className={`react-data-table-filter-input-clear ${
-                          filterBy[item.selector] ? 'active-clear' : ''
-                        }
-                        ${props.filterInputCrossClass || ''}`}
-                      >
-                        clear
-                      </span>
-                    </div>
+                  {filterPopoverKey === item.selector && (
+                    <Popover
+                      filterInputContainerClass={
+                        props.filterInputContainerClass
+                      }
+                      filterInputFieldClass={props.filterInputFieldClass}
+                      filterInputApplyClass={props.filterInputApplyClass}
+                      name={item.name}
+                      selector={item.selector}
+                      handleApply={handleFilterChange}
+                      initialVal={filterBy[item.selector]}
+                    />
                   )}
                 </th>
               ))}
@@ -353,23 +347,24 @@ const Table: React.FunctionComponent<Props> = props => {
                 </span>
               )}
 
-              {Array(Math.min(totalPageNumber, 10))
-                .fill(0)
-                .map((_, i) => {
-                  return (
-                    <span
-                      className={`react-data-table-footer-link c-pointer ${
-                        startPage + i === pageNumber
-                          ? `active ${props.activePageCellClass || ''}`
-                          : ''
-                      }  ${props.pageNumberCellClass || ''}`}
-                      onClick={() => setPageNumber(startPage + i)}
-                      key={i}
-                    >
-                      {startPage + i}
-                    </span>
-                  );
-                })}
+              {totalPageNumber > 1 &&
+                Array(Math.min(totalPageNumber, 10))
+                  .fill(0)
+                  .map((_, i) => {
+                    return (
+                      <span
+                        className={`react-data-table-footer-link c-pointer ${
+                          startPage + i === pageNumber
+                            ? `active ${props.activePageCellClass || ''}`
+                            : ''
+                        }  ${props.pageNumberCellClass || ''}`}
+                        onClick={() => setPageNumber(startPage + i)}
+                        key={i}
+                      >
+                        {startPage + i}
+                      </span>
+                    );
+                  })}
               {totalPageNumber > 1 && (
                 <span
                   className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||

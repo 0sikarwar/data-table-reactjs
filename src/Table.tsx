@@ -1,10 +1,38 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Props, { ListItem } from './types';
 import './table.css';
 import { funnelIcon, sortUpIcon, sortDownIcon } from './icon';
 import { export2File, filterList, sortList } from './tabel.helper';
 import Popover from './popover';
+import MultiSelectDropdown from './multiselectDropdown';
+
+const downloadOptions = [
+  {
+    selector: '.txt',
+    name: '.txt',
+  },
+  {
+    selector: '.csv',
+    name: '.csv',
+  },
+];
+
+const pageSizeOption = [
+  {
+    selector: '20',
+    name: '20',
+  },
+  {
+    selector: '50',
+    name: '50',
+  },
+  {
+    selector: '100',
+    name: '100',
+  },
+];
+
 const Table: React.FunctionComponent<Props> = props => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -20,12 +48,43 @@ const Table: React.FunctionComponent<Props> = props => {
   const [totalPageNumber, setTotalPageNumber] = useState(
     Math.ceil(totalEntry / pageSize)
   );
-  const handleDownload = (e: ChangeEvent<HTMLSelectElement>) => {
-    export2File(props.columns, list, e.target.value);
+  const [colWidth, setColWidth] = useState(
+    100 /
+      ((props.initiallyVisibleCol?.length || props.columns.length) +
+        ((props.showSerialNumber ? 1 : 0) + (props.actions?.length ? 1 : 0)))
+  );
+
+  const [selectedCols, setSelectedCols] = useState<Array<string>>(
+    props.initiallyVisibleCol || []
+  );
+
+  useEffect(() => {
+    setColWidth(
+      100 /
+        ((selectedCols.length || props.columns.length) +
+          ((props.showSerialNumber ? 1 : 0) + (props.actions?.length ? 1 : 0)))
+    );
+  }, [selectedCols]);
+
+  const toggleSelectedColOption = (obj: { id: string }) => {
+    const id = obj.id;
+    setSelectedCols(prevSelected => {
+      const newArray = [...prevSelected];
+      if (newArray.includes(id)) {
+        return newArray.filter(item => item !== id);
+      } else {
+        newArray.push(id);
+        return newArray;
+      }
+    });
   };
-  const handlePageSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setPageSize(Number(e.target.value));
-    setTotalPageNumber(Math.ceil(totalEntry / Number(e.target.value)));
+
+  const handleDownload = (obj: { id: string }) => {
+    export2File(props.columns, list, obj.id);
+  };
+  const handlePageSizeChange = (obj: { id: string }) => {
+    setPageSize(Number(obj.id));
+    setTotalPageNumber(Math.ceil(totalEntry / Number(obj.id)));
     setPageNumber(1);
   };
 
@@ -105,30 +164,31 @@ const Table: React.FunctionComponent<Props> = props => {
           <div className={`react-data-table-title ${props.titleClass || ''}`}>
             {props.title ? props.title : ''}
           </div>
-          <div
-            className={`react-data-table-download-dropdown-container ${props.downloadDropDownContainerClass ||
-              ''}`}
-          >
-            {props.showDownloadOption && (
-              <>
-                <label
-                  className="react-data-table-download-lable"
-                  htmlFor="downloadOpt"
-                >
-                  Export data:
-                </label>
-                <select
-                  className={`react-data-table-download-dropdown ${props.downloadDropDownClass ||
-                    ''}`}
-                  id="downloadOpt"
-                  onChange={handleDownload}
-                >
-                  <option value=""> Select an option </option>
-                  <option value=".txt">.txt</option>
-                  <option value=".csv">.csv</option>
-                </select>
-              </>
+          <div className="react-data-table-title-option-container">
+            {!props.hideOptionToSelectCol && (
+              <MultiSelectDropdown
+                options={props.columns}
+                selected={selectedCols}
+                onSelect={toggleSelectedColOption}
+                setSelectedCols={setSelectedCols}
+                placeholder="Select Columns to display"
+                isMulti
+              />
             )}
+            <div
+              className={`react-data-table-download-dropdown-container ${props.downloadDropDownContainerClass ||
+                ''}`}
+            >
+              {props.showDownloadOption && (
+                <MultiSelectDropdown
+                  options={downloadOptions}
+                  selected=""
+                  onSelect={handleDownload}
+                  placeholder="Select format to Export"
+                  width="180px"
+                />
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -148,99 +208,106 @@ const Table: React.FunctionComponent<Props> = props => {
                 <th
                   className={`react-data-table-header-cell ${props.headerCellClass ||
                     ''}`}
-                  style={{ width: '52px' }}
+                  style={{
+                    width: `${colWidth}%`,
+                    maxWidth: `${colWidth}%`,
+                    minWidth: `${colWidth}%`,
+                  }}
                 >
                   S.No.
                 </th>
               )}
-              {props.columns.map((item, index) => (
-                <th
-                  key={index}
-                  className={`react-data-table-header-cell ${props.headerCellClass ||
-                    ''}`}
-                  style={
-                    item.width
-                      ? {
-                          width: item.width,
-                          maxWidth: item.width,
-                          minWidth: item.width,
-                        }
-                      : {}
-                  }
-                >
-                  <span>{item.name}</span>
-                  <div
-                    className={`react-data-table-header-icon ${props.headerIconContainerClass ||
+              {props.columns.map((item, index) =>
+                !selectedCols.length || selectedCols.includes(item.selector) ? (
+                  <th
+                    key={index}
+                    className={`react-data-table-header-cell ${props.headerCellClass ||
                       ''}`}
+                    style={{
+                      width: `${colWidth}%`,
+                      maxWidth: `${colWidth}%`,
+                      minWidth: `${colWidth}%`,
+                    }}
                   >
-                    {item.sortable && (
-                      <div className="react-data-table-sort-icon-container">
+                    <span>{item.name}</span>
+                    <div
+                      className={`react-data-table-header-icon ${props.headerIconContainerClass ||
+                        ''}`}
+                    >
+                      {item.sortable && (
+                        <div className="react-data-table-sort-icon-container">
+                          <img
+                            src={sortUpIcon}
+                            width="12px"
+                            height="12px"
+                            onClick={() => handleSortBy(item.selector)}
+                            style={{
+                              opacity:
+                                sortBy.name === item.selector &&
+                                sortBy.type === 'asc'
+                                  ? 1
+                                  : 0.2,
+                              marginBottom: '-3px',
+                            }}
+                          />
+                          <img
+                            src={sortDownIcon}
+                            width="12px"
+                            height="12px"
+                            onClick={() => handleSortBy(item.selector)}
+                            style={{
+                              opacity:
+                                sortBy.name === item.selector &&
+                                sortBy.type === 'dsc'
+                                  ? 1
+                                  : 0.2,
+                            }}
+                          />
+                        </div>
+                      )}
+                      {item.filterable && (
                         <img
-                          src={sortUpIcon}
+                          src={funnelIcon}
                           width="12px"
                           height="12px"
-                          onClick={() => handleSortBy(item.selector)}
                           style={{
-                            opacity:
-                              sortBy.name === item.selector &&
-                              sortBy.type === 'asc'
-                                ? 1
-                                : 0.2,
-                            marginBottom: '-3px',
+                            opacity: !filterBy[item.selector] ? 0.2 : 1,
+                          }}
+                          onClick={() => {
+                            setFilterPopoverKey(
+                              filterPopoverKey === item.selector
+                                ? ''
+                                : item.selector
+                            );
                           }}
                         />
-                        <img
-                          src={sortDownIcon}
-                          width="12px"
-                          height="12px"
-                          onClick={() => handleSortBy(item.selector)}
-                          style={{
-                            opacity:
-                              sortBy.name === item.selector &&
-                              sortBy.type === 'dsc'
-                                ? 1
-                                : 0.2,
-                          }}
-                        />
-                      </div>
-                    )}
-                    {item.filterable && (
-                      <img
-                        src={funnelIcon}
-                        width="12px"
-                        height="12px"
-                        style={{
-                          opacity: !filterBy[item.selector] ? 0.2 : 1,
-                        }}
-                        onClick={() => {
-                          setFilterPopoverKey(
-                            filterPopoverKey === item.selector
-                              ? ''
-                              : item.selector
-                          );
-                        }}
+                      )}
+                    </div>
+                    {filterPopoverKey === item.selector && (
+                      <Popover
+                        filterInputContainerClass={
+                          props.filterInputContainerClass
+                        }
+                        filterInputFieldClass={props.filterInputFieldClass}
+                        filterInputApplyClass={props.filterInputApplyClass}
+                        name={item.name}
+                        selector={item.selector}
+                        handleApply={handleFilterChange}
+                        initialVal={filterBy[item.selector]}
                       />
                     )}
-                  </div>
-                  {filterPopoverKey === item.selector && (
-                    <Popover
-                      filterInputContainerClass={
-                        props.filterInputContainerClass
-                      }
-                      filterInputFieldClass={props.filterInputFieldClass}
-                      filterInputApplyClass={props.filterInputApplyClass}
-                      name={item.name}
-                      selector={item.selector}
-                      handleApply={handleFilterChange}
-                      initialVal={filterBy[item.selector]}
-                    />
-                  )}
-                </th>
-              ))}
+                  </th>
+                ) : null
+              )}
               {!!props.actions?.length && (
                 <th
                   className={`react-data-table-header-cell ${props.headerCellClass ||
                     ''}`}
+                  style={{
+                    width: `${colWidth}%`,
+                    maxWidth: `${colWidth}%`,
+                    minWidth: `${colWidth}%`,
+                  }}
                 >
                   Actions
                 </th>
@@ -260,27 +327,43 @@ const Table: React.FunctionComponent<Props> = props => {
                   <td
                     className={`react-data-table-cell ${props.tableCellClass ||
                       ''}`}
-                    style={{ width: '52px' }}
+                    style={{
+                      width: `${colWidth}%`,
+                      maxWidth: `${colWidth}%`,
+                      minWidth: `${colWidth}%`,
+                    }}
                   >
                     {pageNumber > 1
                       ? (pageNumber - 1) * pageSize + index + 1
                       : index + 1}
                   </td>
                 )}
-                {props.columns.map(item => (
-                  <td
-                    className={`react-data-table-cell ${props.tableCellClass ||
-                      ''}`}
-                    key={item.selector + index}
-                    style={item.width ? { width: item.width } : {}}
-                  >
-                    {obj[item.selector] || props.defaultValForEmpty || '-'}
-                  </td>
-                ))}
+                {props.columns.map(item =>
+                  !selectedCols.length ||
+                  selectedCols.includes(item.selector) ? (
+                    <td
+                      className={`react-data-table-cell ${props.tableCellClass ||
+                        ''}`}
+                      key={item.selector + index}
+                      style={{
+                        width: `${colWidth}%`,
+                        maxWidth: `${colWidth}%`,
+                        minWidth: `${colWidth}%`,
+                      }}
+                    >
+                      {obj[item.selector] || props.defaultValForEmpty || '-'}
+                    </td>
+                  ) : null
+                )}
                 {props.actions?.length && (
                   <td
                     className={`react-data-table-cell ${props.tableCellClass ||
                       ''}`}
+                    style={{
+                      width: `${colWidth}%`,
+                      maxWidth: `${colWidth}%`,
+                      minWidth: `${colWidth}%`,
+                    }}
                   >
                     {props.actions?.map(item => (
                       <span
@@ -308,19 +391,19 @@ const Table: React.FunctionComponent<Props> = props => {
             <h4>Total pages: {totalPageNumber}</h4>
           </div>
           <div className="react-data-table-footer-link-section">
-            <div className={`${props.pageSizeDropDownContainerClass || ''}`}>
+            <div
+              className={`eact-data-table-footer-link-pagesize ${props.pageSizeDropDownContainerClass ||
+                ''}`}
+            >
               <label htmlFor="pazeSizeOpt">Page size:</label>
-              <select
-                value={pageSize}
-                id="pazeSizeOpt"
-                onChange={handlePageSizeChange}
-                className={`react-data-table-page-size-dropdown ${props.pageSizeDropDownClass ||
-                  ''}`}
-              >
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
+              <MultiSelectDropdown
+                options={pageSizeOption}
+                selected={pageSize.toString()}
+                onSelect={handlePageSizeChange}
+                placeholder=""
+                width="50px"
+                fromTop
+              />
             </div>
             <div
               className={`react-data-table-footer-link-container ${props.pageNumberContainerClass ||

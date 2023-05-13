@@ -1,0 +1,67 @@
+.react-data-table-multi-select-dropdown {
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  width: 200px;
+  margin-right: 20px;
+}
+.react-data-table-multi-select-dropdown:hover
+  .react-data-table-multi-select-dropdown__options {
+  display: block;
+  max-height: 250px;
+  overflow-y: scroll;
+}
+.react-data-table-multi-select-dropdown
+  .react-data-table-multi-select-dropdown__selected {
+  border: solid 1px #eee;
+  font-size: 14px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+.react-data-table-multi-select-dropdown
+  .react-data-table-multi-select-dropdown__selected
+  > img {
+  height: 18px;
+}
+.react-data-table-multi-select-dropdown-clear {
+  font-weight: 700;
+  padding-left: 5px;
+  cursor: pointer;
+  color: #a7a7a7;
+}
+.react-data-table-multi-select-dropdown
+  .react-data-table-multi-select-dropdown__options {
+  display: none;
+  position: absolute;
+  box-sizing: border-box;
+  left: 0;
+  width: 100%;
+  list-style: none;
+  padding-left: 0px;
+  border: solid 1px #eee;
+  padding: 5px 0px;
+  margin: 0;
+  background-color: #fff;
+  z-index: 2;
+}
+
+.react-data-table-multi-select-dropdown__options-reversed {
+  bottom: 100%;
+}
+.react-data-table-multi-select-dropdown
+  .react-data-table-multi-select-dropdown__option {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.react-data-table-multi-select-dropdown
+  .react-data-table-multi-select-dropdown__option:hover {
+  background-color: #eee;
+}
+.react-data-table-multi-select-dropdown
+  .c-multi-select-dropdown__option-checkbox {
+  margin-right: 6px;
+}

@@ -2,6 +2,7 @@
   border: 1px solid #d1cfcf;
   border-radius: 10px;
   padding: 10px;
+  height: 95%;
 }
 
 .react-data-table-component-container * {
@@ -19,9 +20,13 @@
   border-radius: 5px;
 }
 
+.react-data-table-title-option-container {
+  display: flex;
+}
+
 .react-data-table-body {
   display: block;
-  max-height: 80vh;
+  height: 95%;
   overflow-y: scroll;
   overflow-x: hidden;
   min-height: 35px;
@@ -51,6 +56,7 @@
 .react-data-table-wrapper {
   max-width: 100vw;
   overflow-x: scroll;
+  height: 89%;
 }
 
 .react-data-table {
@@ -60,6 +66,7 @@
   margin-top: 10px;
   width: 100%;
   margin-bottom: 10px;
+  height: 96%;
 }
 
 .react-data-table-title {
@@ -75,12 +82,12 @@
   border-top: 0;
   border-bottom: 0;
   padding: 12px 5px;
+  word-wrap: break-word;
 }
 
 .react-data-table-cell {
   font-size: 14px;
   color: #333333;
-  word-wrap: break-word;
 }
 
 .react-data-table-row:nth-child(even) {
@@ -167,11 +174,9 @@
   background: #160383;
 }
 
-.react-data-table-page-size-dropdown {
-  width: 60px;
-  margin-right: 20px;
-  margin-left: 5px;
-  padding: 5px;
+.eact-data-table-footer-link-pagesize {
+  display: flex;
+  align-items: center;
 }
 
 .react-data-table-download-dropdown {

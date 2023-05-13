@@ -47,6 +47,8 @@ export default interface Props {
   showSerialNumber?: boolean;
   showDownloadOption?: boolean;
   defaultValForEmpty?: any;
+  initiallyVisibleCol?: Array<string>;
+  hideOptionToSelectCol?: boolean;
 }
 
 export interface PopoverProps {
@@ -57,4 +59,15 @@ export interface PopoverProps {
   selector: string;
   initialVal: string;
   handleApply: Function;
+}
+
+export interface MultiSelectDropdownProps {
+  options: Array<Column>;
+  selected: Array<string> | string;
+  onSelect: Function;
+  setSelectedCols?: Function;
+  isMulti?: boolean;
+  placeholder: string;
+  width?: string;
+  fromTop?: boolean;
 }

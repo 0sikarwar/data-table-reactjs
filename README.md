@@ -25,7 +25,6 @@ Nothing new here - we are using an array of object literals and properties to de
 | selector   | string | yes      | a data set unique property in dot notation. e.g. `property1.nested1` . A `selector` is required anytime you want to display data but can be ommitted if your column does not require showing data (e.g. an actions column) |
 | sortable   | bool   | no       | if the column is sortable. columns will be sorted using basic sor functions and will have ability to sort `string, date, number`                                                                                           |
 | filterable | bool   | no       | if the column is filterable. Rows will be filter by converting data to string type                                                                                                                                         |
-| width      | string | no       | give the column a fixed width. Can be skiped for last column to cover remaining space.                                                                                                                                     |
 
 ### Actions
 
@@ -40,23 +39,25 @@ Nothing new here - we are using an array of object literals and properties to de
 
 #### Basic
 
-| Property           | Type                | Required | Default | Description                                                          |
-| ------------------ | ------------------- | -------- | ------- | -------------------------------------------------------------------- |
-| title              | string              | no       |         | The Title displayed in the Table Header                              |
-| columns            | array<Columns>      | yes      | []      | The column configuration                                             |
-| isLoading          | bool                | no       |         | Show a loader                                                        |
-| loadingComponent   | Component or string | no       |         | custom component to display                                          |
-| list               | array<Object>       | yes      | []      | List of records containing properties with name of `column selector` |
-| actions            | array<Actions>      | no       | []      | The action configuration                                             |
-| pagination         | bool                | no       | false   | to enable pagination                                                 |
-| showSerialNumber   | bool                | no       | false   | to show the serial number as first column of table                   |
-| showDownloadOption | bool                | no       | false   | to show download file option                                         |
-| defaultValForEmpty | string              | no       | '-'     | Val to display when there is no value for any column                 |
+| Property              | Type                | Required | Default | Description                                                          |
+| --------------------- | ------------------- | -------- | ------- | -------------------------------------------------------------------- |
+| title                 | string              | no       |         | The Title displayed in the Table Header                              |
+| columns               | array<Columns>      | yes      | []      | The column configuration                                             |
+| isLoading             | bool                | no       |         | Show a loader                                                        |
+| loadingComponent      | Component or string | no       |         | custom component to display                                          |
+| list                  | array<Object>       | yes      | []      | List of records containing properties with name of `column selector` |
+| actions               | array<Actions>      | no       | []      | The action configuration                                             |
+| pagination            | bool                | no       | false   | to enable pagination                                                 |
+| showSerialNumber      | bool                | no       | false   | to show the serial number as first column of table                   |
+| showDownloadOption    | bool                | no       | false   | to show download file option                                         |
+| defaultValForEmpty    | string              | no       | '-'     | Val to display when there is no value for any column                 |
+| initiallyVisibleCol   | array<String>       | no       | all     | Columns to be diplayed intitally                                     |
+| hideOptionToSelectCol | bool                | no       | false   | Hide option to select columns                                        |
 
 #### Class Names to modify styles of table
 
 the class names are self explantory and can be used to customize the table view
-`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputApplyClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass`
+`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputApplyClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass | react-data-table-multi-select-dropdown`
 All classes can be passed to table
 
 ### Usage example

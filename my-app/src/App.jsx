@@ -302,14 +302,22 @@ const temp = [
 ];
 const list = [...temp, ...temp];
 const MyComponent = () => (
-  <ReactDataTable
-    title="Title of the table"
-    columns={columns}
-    list={list}
-    actions={actions}
-    showSerialNumber
-    pagination
-  />
+  <div style={{ height: '80%' }}>
+    <h1>DATA TABLE TEST</h1>
+    <div style={{ height: '80vh' }}>
+      <ReactDataTable
+        title="Title of the table"
+        columns={columns}
+        list={list}
+        actions={actions}
+        initiallyVisibleCol={['plan_name', 'name', 'location', 'email']}
+        showSerialNumber
+        pagination
+        showDownloadOption
+        // hideOptionToSelectCol
+      />
+    </div>
+  </div>
 );
 
 export default MyComponent;

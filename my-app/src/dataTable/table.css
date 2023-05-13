@@ -90,6 +90,21 @@
   color: #333333;
 }
 
+.react-data-table-action-cell {
+  display: flex;
+}
+
+.react-data-table-action-cell-item {
+  margin-right: 5px;
+}
+
+.react-data-table-multi-select-dropdown__selected img {
+  display: inline;
+}
+
+.react-data-table-multi-select-dropdown__option-checkbox {
+  margin-right: 3px;
+}
 .react-data-table-row:nth-child(even) {
   background: #f7f7f7;
 }

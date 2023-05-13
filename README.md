@@ -57,7 +57,7 @@ Nothing new here - we are using an array of object literals and properties to de
 #### Class Names to modify styles of table
 
 the class names are self explantory and can be used to customize the table view
-`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputApplyClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass | react-data-table-multi-select-dropdown`
+`containerClass | titleContainerClass | titleClass | downloadDropDownContainerClass | downloadDropDownClass | tableClass | tableWapperClass | headerRowClass | headerCellClass | headerIconContainerClass | filterInputContainerClass | filterInputFieldClass | filterInputApplyClass | tableBodyClassName | tableRowClass | tableCellClass | actionsClass | tableFooterClass | pageSizeDropDownContainerClass | pageSizeDropDownClass | pageNumberContainerClass | pageNumberCellClass | activePageCellClass | react-data-table-multi-select-dropdown | react-data-table-action-cell | react-data-table-action-cell-item`
 All classes can be passed to table
 
 ### Usage example

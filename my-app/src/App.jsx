@@ -87,6 +87,13 @@ const actions = [
     },
     label: 'View record',
   },
+  {
+    key: 'viewDetails1',
+    handler: (index, item) => {
+      console.log(index, item);
+    },
+    label: <div>View record1</div>,
+  },
 ];
 const temp = [
   {

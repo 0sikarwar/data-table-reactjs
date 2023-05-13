@@ -365,16 +365,18 @@ const Table: React.FunctionComponent<Props> = props => {
                       minWidth: `${colWidth}%`,
                     }}
                   >
-                    {props.actions?.map(item => (
-                      <span
-                        onClick={() => item.handler(index, obj)}
-                        key={item.key}
-                        className={`t-underLine c-pointer ${item.className ||
-                          ''} ${props.actionsClass || ''}`}
-                      >
-                        {item.label}
-                      </span>
-                    ))}
+                    <div className="react-data-table-action-cell">
+                      {props.actions?.map(item => (
+                        <div
+                          onClick={() => item.handler(index, obj)}
+                          key={item.key}
+                          className={`t-underLine c-pointer react-data-table-action-cell-item ${item.className ||
+                            ''} ${props.actionsClass || ''}`}
+                        >
+                          {item.label}
+                        </div>
+                      ))}
+                    </div>
                   </td>
                 )}
               </tr>

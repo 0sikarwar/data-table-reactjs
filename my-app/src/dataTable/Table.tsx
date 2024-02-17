@@ -33,7 +33,7 @@ const pageSizeOption = [
   },
 ];
 
-const Table: React.FunctionComponent<Props> = (props) => {
+const Table: React.FunctionComponent<Props> = props => {
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
   const [list, setList] = useState([...props.list]);
@@ -72,10 +72,10 @@ const Table: React.FunctionComponent<Props> = (props) => {
 
   const toggleSelectedColOption = (obj: { id: string }) => {
     const id = obj.id;
-    setSelectedCols((prevSelected) => {
+    setSelectedCols(prevSelected => {
       const newArray = [...prevSelected];
       if (newArray.includes(id)) {
-        return newArray.filter((item) => item !== id);
+        return newArray.filter(item => item !== id);
       } else {
         newArray.push(id);
         return newArray;
@@ -146,7 +146,7 @@ const Table: React.FunctionComponent<Props> = (props) => {
   useEffect(() => {
     const currentList = [...list];
     setListInState(currentList);
-    let temp = tableHeightDiff;
+    let temp = 0;
     if (titleRef.current) {
       temp += titleRef.current.offsetHeight;
     }
@@ -165,16 +165,14 @@ const Table: React.FunctionComponent<Props> = (props) => {
   }
   return (
     <div
-      className={`react-data-table-component-container ${
-        props.containerClass || ''
-      }`}
+      className={`react-data-table-component-container ${props.containerClass ||
+        ''}`}
       style={{ '--table-height-diff': `${tableHeightDiff}px` }}
     >
       {(props.showDownloadOption || props.title) && (
         <div
-          className={`react-data-table-title-container ${
-            props.titleContainerClass || ''
-          }`}
+          className={`react-data-table-title-container ${props.titleContainerClass ||
+            ''}`}
           ref={titleRef}
         >
           <div className={`react-data-table-title ${props.titleClass || ''}`}>
@@ -192,9 +190,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
               />
             )}
             <div
-              className={`react-data-table-download-dropdown-container ${
-                props.downloadDropDownContainerClass || ''
-              }`}
+              className={`react-data-table-download-dropdown-container ${props.downloadDropDownContainerClass ||
+                ''}`}
             >
               {props.showDownloadOption && (
                 <MultiSelectDropdown
@@ -218,15 +215,13 @@ const Table: React.FunctionComponent<Props> = (props) => {
         >
           <thead>
             <tr
-              className={`react-data-table-header ${
-                props.headerRowClass || ''
-              }`}
+              className={`react-data-table-header ${props.headerRowClass ||
+                ''}`}
             >
               {props.showSerialNumber && (
                 <th
-                  className={`react-data-table-header-cell ${
-                    props.headerCellClass || ''
-                  }`}
+                  className={`react-data-table-header-cell ${props.headerCellClass ||
+                    ''}`}
                   style={{
                     width: `${colWidth}%`,
                     maxWidth: `${colWidth}%`,
@@ -240,9 +235,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
                 !selectedCols.length || selectedCols.includes(item.selector) ? (
                   <th
                     key={index}
-                    className={`react-data-table-header-cell ${
-                      props.headerCellClass || ''
-                    }`}
+                    className={`react-data-table-header-cell ${props.headerCellClass ||
+                      ''}`}
                     style={{
                       width: `${colWidth}%`,
                       maxWidth: `${colWidth}%`,
@@ -251,9 +245,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
                   >
                     <span>{item.name}</span>
                     <div
-                      className={`react-data-table-header-icon ${
-                        props.headerIconContainerClass || ''
-                      }`}
+                      className={`react-data-table-header-icon ${props.headerIconContainerClass ||
+                        ''}`}
                     >
                       {item.sortable && (
                         <div className="react-data-table-sort-icon-container">
@@ -322,9 +315,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
               )}
               {!!props.actions?.length && (
                 <th
-                  className={`react-data-table-header-cell ${
-                    props.headerCellClass || ''
-                  }`}
+                  className={`react-data-table-header-cell ${props.headerCellClass ||
+                    ''}`}
                   style={{
                     width: `${colWidth}%`,
                     maxWidth: `${colWidth}%`,
@@ -337,9 +329,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
             </tr>
           </thead>
           <tbody
-            className={`react-data-table-body ${
-              props.tableBodyClassName || ''
-            }`}
+            className={`react-data-table-body ${props.tableBodyClassName ||
+              ''}`}
           >
             {listToDisplay.map((obj, index) => (
               <tr
@@ -348,9 +339,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
               >
                 {props.showSerialNumber && (
                   <td
-                    className={`react-data-table-cell ${
-                      props.tableCellClass || ''
-                    }`}
+                    className={`react-data-table-cell ${props.tableCellClass ||
+                      ''}`}
                     style={{
                       width: `${colWidth}%`,
                       maxWidth: `${colWidth}%`,
@@ -362,13 +352,12 @@ const Table: React.FunctionComponent<Props> = (props) => {
                       : index + 1}
                   </td>
                 )}
-                {props.columns.map((item) =>
+                {props.columns.map(item =>
                   !selectedCols.length ||
                   selectedCols.includes(item.selector) ? (
                     <td
-                      className={`react-data-table-cell ${
-                        props.tableCellClass || ''
-                      }`}
+                      className={`react-data-table-cell ${props.tableCellClass ||
+                        ''}`}
                       key={item.selector + index}
                       style={{
                         width: `${colWidth}%`,
@@ -382,9 +371,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
                 )}
                 {props.actions?.length && (
                   <td
-                    className={`react-data-table-cell ${
-                      props.tableCellClass || ''
-                    }`}
+                    className={`react-data-table-cell ${props.tableCellClass ||
+                      ''}`}
                     style={{
                       width: `${colWidth}%`,
                       maxWidth: `${colWidth}%`,
@@ -392,13 +380,12 @@ const Table: React.FunctionComponent<Props> = (props) => {
                     }}
                   >
                     <div className="react-data-table-action-cell">
-                      {props.actions?.map((item) => (
+                      {props.actions?.map(item => (
                         <div
                           onClick={() => item.handler(index, obj)}
                           key={item.key}
-                          className={`t-underLine c-pointer react-data-table-action-cell-item ${
-                            item.className || ''
-                          } ${props.actionsClass || ''}`}
+                          className={`t-underLine c-pointer react-data-table-action-cell-item ${item.className ||
+                            ''} ${props.actionsClass || ''}`}
                         >
                           {item.label}
                         </div>
@@ -422,9 +409,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
           </div>
           <div className="react-data-table-footer-link-section">
             <div
-              className={`eact-data-table-footer-link-pagesize ${
-                props.pageSizeDropDownContainerClass || ''
-              }`}
+              className={`eact-data-table-footer-link-pagesize ${props.pageSizeDropDownContainerClass ||
+                ''}`}
             >
               <label htmlFor="pazeSizeOpt">Page size:</label>
               <MultiSelectDropdown
@@ -437,15 +423,13 @@ const Table: React.FunctionComponent<Props> = (props) => {
               />
             </div>
             <div
-              className={`react-data-table-footer-link-container ${
-                props.pageNumberContainerClass || ''
-              }`}
+              className={`react-data-table-footer-link-container ${props.pageNumberContainerClass ||
+                ''}`}
             >
               {totalPageNumber > 10 && (
                 <span
-                  className={`react-data-table-footer-link c-pointer ${
-                    props.pageNumberCellClass || ''
-                  }`}
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
                   onClick={() => setPageNumber(1)}
                 >
                   Start
@@ -453,9 +437,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
               )}
               {totalPageNumber > 1 && (
                 <span
-                  className={`react-data-table-footer-link c-pointer ${
-                    props.pageNumberCellClass || ''
-                  }`}
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
                   onClick={() =>
                     pageNumber > 1 && setPageNumber(pageNumber - 1)
                   }
@@ -484,9 +467,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
                   })}
               {totalPageNumber > 1 && (
                 <span
-                  className={`react-data-table-footer-link c-pointer ${
-                    props.pageNumberCellClass || ''
-                  }`}
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
                   onClick={() =>
                     pageNumber < totalPageNumber &&
                     setPageNumber(pageNumber + 1)
@@ -497,9 +479,8 @@ const Table: React.FunctionComponent<Props> = (props) => {
               )}
               {totalPageNumber > 10 && (
                 <span
-                  className={`react-data-table-footer-link c-pointer ${
-                    props.pageNumberCellClass || ''
-                  }`}
+                  className={`react-data-table-footer-link c-pointer ${props.pageNumberCellClass ||
+                    ''}`}
                   onClick={() => setPageNumber(totalPageNumber)}
                 >
                   Last

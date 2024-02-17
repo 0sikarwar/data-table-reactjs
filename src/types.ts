@@ -1,3 +1,11 @@
+import 'react';
+
+declare module 'react' {
+  interface CSSProperties {
+    '--table-height-diff'?: string;
+  }
+}
+
 export interface Actions {
   key: string;
   label?: string;
